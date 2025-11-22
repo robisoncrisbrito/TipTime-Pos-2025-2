@@ -8,7 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import br.edu.utfpr.tiptime_pos_2025_2.databinding.ActivityMainBinding
 import java.text.NumberFormat
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() { //fim do MainActivity
 
     private lateinit var binding: ActivityMainBinding
 
@@ -30,8 +30,13 @@ class MainActivity : AppCompatActivity() {
             calculateTip()
         }
 
-        val formattedTip = NumberFormat.getCurrencyInstance().format(0)
-        binding.tipResult.text = getString( R.string.tip_amount, formattedTip )
+
+        if ( savedInstanceState != null ) {
+            binding.tipResult.text = savedInstanceState.getString("cost_of_tip")
+        } else {
+            val formattedTip = NumberFormat.getCurrencyInstance().format(0)
+            binding.tipResult.text = getString(R.string.tip_amount, formattedTip)
+        }
 
     } //fim do onCreate()
 
@@ -63,4 +68,11 @@ class MainActivity : AppCompatActivity() {
 
 
     }
-} //fim do MainActivity
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putString( "cost_of_tip", binding.tipResult.text.toString() )
+    }
+}
